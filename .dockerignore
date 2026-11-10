@@ -1,0 +1,6 @@
+data/
+*.ipynb
+.git/
+.ipynb_checkpoints/
+tests/
+mlflow.db

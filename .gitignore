@@ -3,7 +3,8 @@ data/
 *.csv
 
 # Generated files
-artifacts/
+artifacts/*
+!artifacts/forecasts.parquet
 mlflow.db
 mlruns/
 
