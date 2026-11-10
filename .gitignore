@@ -1,0 +1,18 @@
+# Data (Kaggle licence: don't redistribute)
+data/
+*.csv
+
+# Generated files
+artifacts/
+mlflow.db
+mlruns/
+
+# Notebook and Python clutter
+.ipynb_checkpoints/
+__pycache__/
+.venv/
+
+# Old notebook versions
+Forecasting_Project.ipynb
+Copy.ipynb
+Forecasting_Project_SalesData.ipynb
