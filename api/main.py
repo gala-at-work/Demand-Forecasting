@@ -29,8 +29,11 @@ class Forecast(BaseModel):
 
 @app.get("/health")
 def health() -> dict:
+    """Which forecasts are being served, and from which MLflow run and model version."""
     return {"status": "ok", "series": int(forecasts.groupby(["Store", "Dept"]).ngroups),
-            "first_week": str(forecasts["Date"].min().date()), "last_week": str(forecasts["Date"].max().date())}
+            "first_week": str(forecasts["Date"].min().date()), "last_week": str(forecasts["Date"].max().date()),
+            "run_id": str(forecasts["run_id"].iloc[0]), "model_version": int(forecasts["model_version"].iloc[0]),
+            "created_at": str(forecasts["created_at"].iloc[0])}
 
 
 @app.get("/forecast/{store}/{dept}", response_model=Forecast)

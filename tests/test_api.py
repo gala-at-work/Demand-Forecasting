@@ -10,7 +10,8 @@ def client(tmp_path, monkeypatch):
     """API loaded with a small forecast file: one store-dept, 4 weeks."""
     weeks = pd.date_range("2012-11-02", periods=4, freq="7D")
     pd.DataFrame({"Store": 1, "Dept": 1, "Date": weeks[::-1], "p10": 80.0, "p50": 100.0, "p90": 130.0,
-                  "stock_p75": 450.0, "stock_p90": 520.0}).to_parquet(tmp_path / "forecasts.parquet")
+                  "stock_p75": 450.0, "stock_p90": 520.0, "run_id": "abc123", "model_version": 1,
+                  "created_at": pd.Timestamp("2012-10-27", tz="UTC")}).to_parquet(tmp_path / "forecasts.parquet")
     monkeypatch.setenv("FORECAST_FILE", str(tmp_path / "forecasts.parquet"))
     import api.main
     importlib.reload(api.main)
@@ -20,7 +21,9 @@ def client(tmp_path, monkeypatch):
 def test_health(client):
     response = client.get("/health")
     assert response.status_code == 200
-    assert response.json()["series"] == 1
+    body = response.json()
+    assert body["series"] == 1
+    assert body["run_id"] == "abc123" and body["model_version"] == 1
 
 
 def test_forecast_returns_four_weeks_in_order(client):
